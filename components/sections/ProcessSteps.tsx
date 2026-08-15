@@ -5,13 +5,13 @@ import { Button } from "@/components/ui/Button";
 
 export function ProcessSteps() {
   return (
-    <section className="relative bg-black py-10 md:py-20" aria-labelledby="process-heading">
+    <section className="relative bg-black py-10 md:py-[3.6rem] md:pt-[3rem]" aria-labelledby="process-heading">
       <div className="absolute inset-x-0 top-0 h-1.5 bg-gold-gradient" aria-hidden="true" />
       <div className="absolute inset-x-0 bottom-0 h-1.5 bg-gold-gradient" aria-hidden="true" />
 
       <div className="mx-auto max-w-content px-6 lg:px-10">
-        <SectionHeading id="process-heading" tone="gold-gradient">
-          Four Simple Steps To Get Started
+        <SectionHeading id="process-heading" tone="gold-gradient" className="!leading-[1.4]">
+          Four Simple Steps To Get<br /> Started
         </SectionHeading>
 
         {/* This content genuinely is an ordered sequence, so numbering here
@@ -43,7 +43,12 @@ export function ProcessSteps() {
         </ol>
 
         <div className="mt-14 flex justify-center">
-          <Button href="#book-appointment" className="px-14">Schedule a Call</Button>
+          <Button
+            href="#book-appointment"
+            className="!w-[298px] !h-[62px] !min-w-[298px] !min-h-[62px] !rounded-[50px] !font-semibold !text-base !leading-[27px] !tracking-[0px]"
+          >
+            Schedule a Call
+          </Button>
         </div>
       </div>
     </section>

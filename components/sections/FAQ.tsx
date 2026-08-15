@@ -28,7 +28,12 @@ export function FAQ() {
         </div>
 
         <div className="mt-12 flex justify-center">
-          <Button href="#faq" className="px-16 !font-bold">See all FAQ</Button>
+          <Button
+            href="#faq"
+            className="!w-[335px] !h-[56px] !min-w-[335px] !min-h-[56px] !bg-[linear-gradient(90deg,_#CEA341_0%,_#E8D16B_49.79%,_#F0DF78_100%)] !font-semibold !text-base !leading-[27px] !tracking-[0px]"
+          >
+            See all FAQ
+          </Button>
         </div>
       </div>
     </section>

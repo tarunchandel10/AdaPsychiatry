@@ -11,24 +11,23 @@ export const faqItems: FaqItem[] = [
     id: "scheduling",
     question: "What is the best way to schedule an appointment?",
     answer:
-      "The fastest way is through the Book an Appointment button at the top of this page, which opens our online scheduling tool.",
+      "We offer in-person and virtual psychiatry services where you can meet your provider in person or at the convenience of your own home.",
   },
   {
     id: "controlled-substances",
     question: "Do you prescribe controlled substance medication?",
     answer:
-      "Our providers evaluate each case individually and, where clinically appropriate, can prescribe controlled substance medication as part of a monitored treatment plan.",
+      "We offer in-person and virtual psychiatry services where you can meet your provider in person or at the convenience of your own home.",
   },
   {
     id: "initial-appointment-length",
     question: "How long does the initial appointment take?",
     answer:
-      "Initial evaluations typically run 45–60 minutes so your provider has time to fully understand your history and goals.",
+      "We offer in-person and virtual psychiatry services where you can meet your provider in person or at the convenience of your own home.",
   },
 ];
 
 export const footerLinkGroups: [
-  FooterLinkGroup,
   FooterLinkGroup,
   FooterLinkGroup,
   FooterLinkGroup,
@@ -38,6 +37,7 @@ export const footerLinkGroups: [
     links: [
       { label: "Who We Are", href: "#" },
       { label: "What We Treat", href: "#" },
+      { label: "Services", href: "#" },
       { label: "Contact Us", href: "#" },
     ],
   },
@@ -58,8 +58,5 @@ export const footerLinkGroups: [
       { label: "Cookie Settings", href: "#" },
     ],
   },
-  {
-    heading: "Business Hours",
-    links: [{ label: "Monday – Thursday, 09:00 am – 4:00 pm", href: "#" }],
-  },
+ 
 ];

@@ -9,21 +9,42 @@ import { StarDot } from "@/components/ui/StarDot";
 export function Testimonials() {
   const listRef = useRef<HTMLUListElement>(null);
   const cardRefs = useRef<(HTMLLIElement | null)[]>([]);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(1);
 
   useEffect(() => {
     const list = listRef.current;
     if (!list) return;
 
+    // Land on the second slide on load — jump instantly (no smooth
+    // animation) so it doesn't visibly scroll past the first card.
+    cardRefs.current[1]?.scrollIntoView({ behavior: "auto", inline: "center", block: "nearest" });
+
+    // IntersectionObserver only reports entries whose ratio changed since the
+    // last callback, not every observed card — so ratios must be tracked
+    // across calls and the "most visible" card recomputed from the full set
+    // each time, or the active dot flickers to whichever card happened to
+    // fire that tick instead of the one actually most in view.
+    const ratios = new Map<Element, number>();
+
     const observer = new IntersectionObserver(
       (entries) => {
-        const mostVisible = entries.reduce((best, entry) =>
-          entry.intersectionRatio > best.intersectionRatio ? entry : best
-        );
-        if (mostVisible.intersectionRatio > 0) {
-          const index = cardRefs.current.findIndex((el) => el === mostVisible.target);
-          if (index !== -1) setActiveIndex(index);
-        }
+        entries.forEach((entry) => ratios.set(entry.target, entry.intersectionRatio));
+
+        let bestIndex = -1;
+        let bestRatio = 0;
+        cardRefs.current.forEach((el, index) => {
+          const ratio = el ? ratios.get(el) ?? 0 : 0;
+          // >= (not >): near the end of the list two cards can be equally
+          // fully visible at once (cards are 45% wide at lg), and on a tie
+          // the later — i.e. more recently scrolled-to — card should win,
+          // or the last dot can never become active.
+          if (ratio >= bestRatio) {
+            bestRatio = ratio;
+            bestIndex = index;
+          }
+        });
+
+        if (bestIndex !== -1) setActiveIndex(bestIndex);
       },
       { root: list, threshold: [0.5, 0.75, 1] }
     );
@@ -34,6 +55,7 @@ export function Testimonials() {
 
   const scrollToIndex = (index: number) => {
     cardRefs.current[index]?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    setActiveIndex(index);
   };
 
   return (
@@ -72,7 +94,7 @@ export function Testimonials() {
                 className="h-[60px] w-[60px] shrink-0 rounded-full object-cover"
               />
               <div>
-                <p className="font-sans text-lg font-semibold text-white">{testimonial.name}</p>
+                <p className="font-sans text-[20px] font-semibold leading-[100%] tracking-[0%] text-white">{testimonial.name}</p>
                 <p className="font-sans text-sm text-white/80">{testimonial.affiliation}</p>
               </div>
             </footer>

@@ -16,10 +16,9 @@ export function Footer() {
     <footer className="bg-black pt-10 pb-6 text-white md:pt-16">
       <div className="mx-auto max-w-content px-6 lg:px-10">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-6">
-          {/* Quick Links */}
           <div className="lg:col-span-2">
             <p className="font-display text-[18px] font-bold text-gold-rod">Quick Links</p>
-            <ul className="mt-3 flex flex-col gap-3">
+            <ul className="mt-5 flex flex-col gap-3">
               {footerLinkGroups[0].links.map((link) => (
                 <li key={link.label}>
                   <Link href={link.href} className="font-sans text-sm text-white/80 hover:text-gold">
@@ -30,10 +29,9 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Resources */}
           <div className="lg:col-span-2">
             <p className="font-display text-[18px] font-bold text-gold-rod">Resources</p>
-            <ul className="mt-3 flex flex-col gap-3">
+            <ul className="mt-5 flex flex-col gap-3">
               {footerLinkGroups[1].links.map((link) => (
                 <li key={link.label}>
                   <Link href={link.href} className="font-sans text-sm text-white/80 hover:text-gold">
@@ -44,10 +42,10 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Legal */}
+          
           <div className="lg:col-span-2">
             <p className="font-display text-[18px] font-bold text-gold-rod">Legal</p>
-            <ul className="mt-3 flex flex-col gap-3">
+            <ul className="mt-5 flex flex-col gap-3">
               {footerLinkGroups[2].links.map((link) => (
                 <li key={link.label}>
                   <Link href={link.href} className="font-sans text-sm text-white/80 hover:text-gold">
@@ -58,14 +56,14 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Business Hours */}
+          
           <div className="lg:col-span-3">
             <p className="font-display text-[18px] font-bold text-gold-rod">Business Hours</p>
-            <div className="mt-3 font-sans text-sm text-white/80">
+            <div className="mt-5 font-sans text-sm text-white/80">
               <p>Monday – Thursday</p>
               <p className="mt-3">09:00 am – 4:00 pm</p>
-              <p className="mt-4 font-bold text-gold-rod">For Careers</p>
-              <p className="mt-2 text-white/80">
+              <p className="mt-5 text-[18px] font-display font-bold text-gold-rod">For Careers</p>
+              <p className="mt-4 text-white/80">
                 Interested in joining the ADA Team?<br />
                 <a href="mailto:Career@adapsychiatry.com" className="text-white hover:text-gold">
                   Career@adapsychiatry.com
@@ -74,9 +72,9 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Right section - Logo and Locate us */}
+          
           <div className="lg:col-span-3">
-            <div className="mb-3 flex items-center gap-3">
+            <div className="mb-5 flex items-center gap-3">
               <Link href="/" className="flex items-center gap-2" aria-label="Ada Psychiatry home">
                 <Image src={images.logoMark} alt="" width={40} height={40} className="h-10 w-10 object-contain" />
                 <span className="font-sans text-sm font-bold tracking-wider">
@@ -86,7 +84,7 @@ export function Footer() {
             </div>
 
             <p className="font-display text-[16px] font-bold text-gold-rod">Locate us</p>
-            <address className="mt-3 font-sans text-sm not-italic text-white/80">
+            <address className="mt-2 font-sans text-sm not-italic text-white/80">
               1820 E Ray Road, STE A107, Chandler, Arizona 85225
               <br />
               Phone:{" "}

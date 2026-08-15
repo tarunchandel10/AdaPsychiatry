@@ -32,7 +32,11 @@ export function TreatmentFocus() {
                 <p className="mt-4 font-display text-lg leading-relaxed text-ink/90">
                   {item.description}
                 </p>
-                <Button href={item.ctaHref} className="mt-6">
+                <Button
+                  href={item.ctaHref}
+                  showArrow={false}
+                  className="mt-6 !font-display !font-normal !text-[16.88px] !leading-[16.88px] !tracking-[0px] !w-[180px] !h-[52.5px] !min-w-[180px] !min-h-[52.5px] !rounded-[46.88px] !pt-[7.5px] !pr-[18.75px] !pb-[7.5px] !pl-[18.75px]"
+                >
                   Learn More
                 </Button>
               </div>

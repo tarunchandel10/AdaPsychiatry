@@ -22,7 +22,10 @@ export function Services() {
           ))}
         </ul>
 
-        <Button href="#services" className="mx-auto mt-12 px-14">
+        <Button
+          href="#services"
+          className="mx-auto mt-12 !w-[298px] !h-[62px] !min-w-[298px] !min-h-[62px] !rounded-[50px] !font-semibold !text-base !leading-[27px] !tracking-[0px]"
+        >
           View our services
         </Button>
       </div>
