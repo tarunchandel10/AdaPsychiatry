@@ -10,6 +10,10 @@ export function Testimonials() {
   const listRef = useRef<HTMLUListElement>(null);
   const cardRefs = useRef<(HTMLLIElement | null)[]>([]);
   const [activeIndex, setActiveIndex] = useState(1);
+  // True from the moment a dot is clicked until its scroll animation
+  // settles, so the observer below can be told to stop overriding
+  // activeIndex until then — see the comment on the observer for why.
+  const isDotScrolling = useRef(false);
 
   useEffect(() => {
     const list = listRef.current;
@@ -17,7 +21,15 @@ export function Testimonials() {
 
     // Land on the second slide on load — jump instantly (no smooth
     // animation) so it doesn't visibly scroll past the first card.
-    cardRefs.current[1]?.scrollIntoView({ behavior: "auto", inline: "center", block: "nearest" });
+    // Scroll the row's own scrollLeft directly rather than using
+    // scrollIntoView: scrollIntoView also walks up and scrolls ancestor
+    // containers (including the page) to bring the target into view, which
+    // yanks the whole page down to this section on every load since it
+    // isn't in the viewport yet at mount time.
+    const card = cardRefs.current[1];
+    if (card) {
+      list.scrollLeft = card.offsetLeft - (list.clientWidth - card.clientWidth) / 2;
+    }
 
     // IntersectionObserver only reports entries whose ratio changed since the
     // last callback, not every observed card — so ratios must be tracked
@@ -29,15 +41,29 @@ export function Testimonials() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => ratios.set(entry.target, entry.intersectionRatio));
+        // While a dot click is smooth-scrolling toward its target, every
+        // card the row passes over crosses these thresholds too, so this
+        // fires repeatedly with whichever card is mid-transit — committing
+        // that makes the active dot jump around during the animation. Worse,
+        // cards are 45% wide at lg, so at the very start/end of the row two
+        // cards can both land on ratio 1 at once; there's no reliable
+        // geometric way to tell which of the tied pair the click actually
+        // meant (the target card can't literally reach "centered" there,
+        // since centering it would need to scroll past the row's edge).
+        // The click already knows the intended index — trust that and just
+        // ignore the observer until the scroll settles (see the scroll
+        // listener below), instead of re-deriving it from ambiguous ratios.
+        if (isDotScrolling.current) return;
 
         let bestIndex = -1;
         let bestRatio = 0;
         cardRefs.current.forEach((el, index) => {
           const ratio = el ? ratios.get(el) ?? 0 : 0;
-          // >= (not >): near the end of the list two cards can be equally
-          // fully visible at once (cards are 45% wide at lg), and on a tie
-          // the later — i.e. more recently scrolled-to — card should win,
-          // or the last dot can never become active.
+          // >= (not >): this only runs for manual swipes now (dot clicks are
+          // trusted directly, above), and at the far end of the row two
+          // cards can both settle at ratio 1 — on a tie the later, i.e. the
+          // one the user swiped toward, should win, or the last dot can
+          // never activate by swiping to the end.
           if (ratio >= bestRatio) {
             bestRatio = ratio;
             bestIndex = index;
@@ -50,11 +76,37 @@ export function Testimonials() {
     );
 
     cardRefs.current.forEach((el) => el && observer.observe(el));
-    return () => observer.disconnect();
+
+    // Detect scroll settling via debounce rather than the `scrollend` event
+    // (still unsupported on older Safari). Only re-arms the observer for the
+    // next manual swipe — the click that started this scroll already set
+    // activeIndex to its target, so there's nothing to recompute here.
+    let settleTimer: ReturnType<typeof setTimeout>;
+    const handleScroll = () => {
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(() => {
+        isDotScrolling.current = false;
+      }, 120);
+    };
+    list.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      list.removeEventListener("scroll", handleScroll);
+      clearTimeout(settleTimer);
+    };
   }, []);
 
   const scrollToIndex = (index: number) => {
-    cardRefs.current[index]?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    const list = listRef.current;
+    const card = cardRefs.current[index];
+    if (list && card) {
+      isDotScrolling.current = true;
+      list.scrollTo({
+        left: card.offsetLeft - (list.clientWidth - card.clientWidth) / 2,
+        behavior: "smooth",
+      });
+    }
     setActiveIndex(index);
   };
 
